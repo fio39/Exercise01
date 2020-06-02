@@ -1,8 +1,14 @@
 let money;
 let time;
 
-money = +prompt("Ваш бюджет на месяц?", 1000);
-time = prompt("Введите дату в формате YYYY-MM-DD", "2020-05-30");
+function start() {
+    money = +prompt("Ваш бюджет на месяц?", 1000);
+    time = prompt("Введите дату в формате YYYY-MM-DD", "2020-05-30");
+
+    while(isNaN(money) || money == '' || money == null) {
+        money = +prompt("Ваш бюджет на месяц?", 1000);
+    }
+}
 
 const appData = {
     money: money,
@@ -17,28 +23,35 @@ const appData = {
 let expenseItem;
 let expenseCost;
 
-
-for(let i = 0; i < 2; i++) {
-    console.log('start i: ' + i);
-    expenseItem = prompt("Введите обязательную статью расходов в этом месяце");
-    expenseCost = prompt("Во сколько обойдется?");
-
-    if( (typeof(expenseItem)) == 'string' && expenseItem != null &&
-        expenseItem != '' && expenseCost != '') {
-
-        appData.expenses[expenseItem] = expenseCost;
-        console.log('continue i: ' + i);
-
-    } else {
-        i -= 2
-        console.log('return i: ' + i);
+function enteryExpense() {
+    for(let i = 0; i < 2; i++) {
+        expenseItem = prompt("Введите обязательную статью расходов в этом месяце");
+        expenseCost = prompt("Во сколько обойдется?");
+    
+        if( (typeof(expenseItem)) == 'string' && expenseItem != null &&
+            expenseItem != '' && expenseCost != '') {
+    
+            appData.expenses[expenseItem] = expenseCost;
+    
+        } else {
+            i--;
+        }
     }
-    console.log('finish i: ' + i);
-
 }
 
 
-appData.moneyDay = appData.money / 30;
+appData.moneyDay = (appData.money / 30).toFixed(2);
 
 alert("Дневной заработок: " + appData.moneyDay); 
 console.log(appData);
+
+function enterySaving() {
+    if(appData.saving) {
+        let savingAccount = +prompt('Введите сбережения',1000);
+        let savingProcent = +prompt('введите процент', 12);
+        appData.additionIncome = savingAccount/100/12 * savingProcent;
+        alert(`Ежемесечный дополнительный доход от сбережений: ${appData.additionIncome}`);  
+    }
+}
+
+enterySaving();
